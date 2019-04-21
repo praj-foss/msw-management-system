@@ -25,7 +25,7 @@ class MainApp : App(MainView::class) {
         RepositoryService.vehicleRepository.load()
         RepositoryService.collectionRepository.load()
         RepositoryService.lineChartRepository.load()
-        // TODO: Create triggers for graphs
+        RepositoryService.barChartRepository.load()
     }
 
     override fun stop() {

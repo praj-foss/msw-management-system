@@ -37,7 +37,10 @@ class SQLRunnerView : View("SQL Runner") {
         progressBar.progressProperty().bind(sqlService.progressProperty())
 
         sqlService.connect(sqlArea.paragraphs.filtered { it.isNotBlank() })
-        sqlService.onSucceeded = EventHandler { RepositoryService.lineChartRepository.refresh() }
+        sqlService.onSucceeded = EventHandler {
+            RepositoryService.lineChartRepository.refresh()
+            RepositoryService.barChartRepository.refresh()
+        }
 
         sqlArea.requestFocus()
     }

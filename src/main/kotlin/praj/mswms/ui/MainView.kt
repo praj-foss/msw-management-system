@@ -30,7 +30,7 @@ class MainView : View("Municipal Solid Waste Management System") {
     override val root: VBox by fxml("/fxml/main-view.fxml")
 
     private val collectionPerDate: LineChart<String, BigDecimal> by fxid()
-    //private val collectionPerLocation: BarChart by fxid()
+    private val collectionPerLocation: BarChart<String, BigDecimal> by fxid()
 
     private val tableLocation: TableView<Location> by fxid()
     private val tableVehicles: TableView<Vehicle> by fxid()
@@ -63,6 +63,12 @@ class MainView : View("Municipal Solid Waste Management System") {
                 XYChart.Series<String, BigDecimal>().apply {
                     name = "2019"
                     data = RepositoryService.lineChartRepository.listData
+                }
+        )
+        collectionPerLocation.data = FXCollections.observableArrayList(
+                XYChart.Series<String, BigDecimal>().apply {
+                    name = "2019"
+                    data = RepositoryService.barChartRepository.listData
                 }
         )
         tableLocation.items = RepositoryService.locationRepository.elementList

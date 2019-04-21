@@ -74,7 +74,7 @@
                                  <content>
                                     <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="10.0">
                                        <children>
-                                          <LineChart fx:id="collectionPerDate" animated="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
+                                          <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
                                             <xAxis>
                                               <CategoryAxis label="Date" side="BOTTOM" />
                                             </xAxis>
@@ -82,12 +82,12 @@
                                               <NumberAxis label="Tons" side="LEFT" />
                                             </yAxis>
                                           </LineChart>
-                                          <BarChart fx:id="collectionPerLocation" minHeight="260.0" title="Waste collection by Location">
+                                          <BarChart fx:id="collectionPerLocation" minHeight="260.0" title="Waste collection by Location Type">
                                             <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
+                                              <CategoryAxis label="Location Type" side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
-                                              <NumberAxis side="LEFT" />
+                                              <NumberAxis label="Tons" side="LEFT" />
                                             </yAxis>
                                           </BarChart>
                                        </children>

@@ -22,7 +22,7 @@
                </font>
             </Label>
             <Pane prefHeight="200.0" prefWidth="40.0" HBox.hgrow="ALWAYS" />
-            <TextField fx:id="fieldDelay" prefWidth="90.0" promptText="Delay (ms)" text="1000" HBox.hgrow="NEVER" />
+            <TextField fx:id="fieldDelay" prefWidth="90.0" promptText="Delay (ms)" HBox.hgrow="NEVER" />
             <Button fx:id="btnRun" minWidth="-Infinity" mnemonicParsing="false" onAction="#onRun" prefWidth="90.0" text="Run" />
             <Button fx:id="btnClear" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClear" prefWidth="90.0" text="Clear" />
          </children>
