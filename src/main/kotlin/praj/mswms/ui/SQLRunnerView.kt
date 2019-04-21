@@ -5,11 +5,13 @@
 
 package praj.mswms.ui
 
+import javafx.event.EventHandler
 import javafx.scene.control.Button
 import javafx.scene.control.ProgressBar
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
+import praj.mswms.service.RepositoryService
 import praj.mswms.util.SQLRunnerService
 import tornadofx.View
 
@@ -35,6 +37,8 @@ class SQLRunnerView : View("SQL Runner") {
         progressBar.progressProperty().bind(sqlService.progressProperty())
 
         sqlService.connect(sqlArea.paragraphs.filtered { it.isNotBlank() })
+        sqlService.onSucceeded = EventHandler { RepositoryService.lineChartRepository.refresh() }
+
         sqlArea.requestFocus()
     }
 

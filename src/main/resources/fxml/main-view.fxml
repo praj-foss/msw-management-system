@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -16,7 +16,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
   <children>
@@ -73,37 +72,24 @@
                            <children>
                               <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <content>
-                                    <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="5.0">
+                                    <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="10.0">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" text="Waste collection by Date" VBox.vgrow="NEVER">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                          <LineChart fx:id="collectionPerDate" animated="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis label="Date" side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis label="Tons" side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                          <BarChart fx:id="collectionPerLocation" minHeight="260.0" title="Waste collection by Location">
                                             <xAxis>
                                               <CategoryAxis side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
                                               <NumberAxis side="LEFT" />
                                             </yAxis>
-                                          </LineChart>
-                                          <Label maxWidth="1.7976931348623157E308" text="Waste collection by Location" VBox.vgrow="NEVER">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <LineChart fx:id="collectionPerLocation" maxWidth="1.7976931348623157E308">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis side="LEFT" />
-                                            </yAxis>
-                                          </LineChart>
+                                          </BarChart>
                                        </children>
                                     </VBox>
                                  </content>

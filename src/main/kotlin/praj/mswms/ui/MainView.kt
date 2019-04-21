@@ -5,6 +5,11 @@
 
 package praj.mswms.ui
 
+import javafx.collections.FXCollections
+import javafx.scene.chart.BarChart
+import javafx.scene.chart.LineChart
+import javafx.scene.chart.ValueAxis
+import javafx.scene.chart.XYChart
 import javafx.scene.control.TableView
 import javafx.scene.layout.VBox
 import javafx.util.Callback
@@ -13,12 +18,20 @@ import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
 import tornadofx.View
+import tornadofx.series
+import java.math.BigDecimal
+import java.sql.Date
+import java.time.LocalDate
 
 /**
  * The main view.
  */
 class MainView : View("Municipal Solid Waste Management System") {
     override val root: VBox by fxml("/fxml/main-view.fxml")
+
+    private val collectionPerDate: LineChart<String, BigDecimal> by fxid()
+    //private val collectionPerLocation: BarChart by fxid()
+
     private val tableLocation: TableView<Location> by fxid()
     private val tableVehicles: TableView<Vehicle> by fxid()
     private val tableCollection: TableView<Collection> by fxid()
@@ -46,6 +59,12 @@ class MainView : View("Municipal Solid Waste Management System") {
             get(4).cellValueFactory = Callback { it.value.amountProperty() }
         }
 
+        collectionPerDate.data = FXCollections.observableArrayList(
+                XYChart.Series<String, BigDecimal>().apply {
+                    name = "2019"
+                    data = RepositoryService.lineChartRepository.listData
+                }
+        )
         tableLocation.items = RepositoryService.locationRepository.elementList
         tableVehicles.items = RepositoryService.vehicleRepository.elementList
         tableCollection.items = RepositoryService.collectionRepository.elementList
