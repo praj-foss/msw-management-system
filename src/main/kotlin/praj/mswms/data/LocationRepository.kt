@@ -14,6 +14,6 @@ import praj.mswms.data.model.Location
  * Repository for Location objects.
  */
 class LocationRepository : Repository<Location>() {
-    override val elementList: ObservableList<Location> = FXCollections.observableArrayList()
+    public override val elementList: ObservableList<Location> = FXCollections.observableArrayList()
     override val dao = LocationDAO()
 }

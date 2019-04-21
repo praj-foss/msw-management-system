@@ -9,6 +9,7 @@ import javafx.scene.control.TableView
 import javafx.scene.layout.VBox
 import javafx.util.Callback
 import praj.mswms.data.model.Collection
+import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
 import tornadofx.View
@@ -18,10 +19,17 @@ import tornadofx.View
  */
 class MainView : View("Municipal Solid Waste Management System") {
     override val root: VBox by fxml("/fxml/main-view.fxml")
+    private val tableLocation: TableView<Location> by fxid()
     private val tableVehicles: TableView<Vehicle> by fxid()
     private val tableCollection: TableView<Collection> by fxid()
 
     override fun onBeforeShow() {
+        tableLocation.columns.apply {
+            get(0).cellValueFactory = Callback { it.value.idProperty() }
+            get(1).cellValueFactory = Callback { it.value.nameProperty() }
+            get(2).cellValueFactory = Callback { it.value.typeProperty() }
+        }
+
         tableVehicles.columns.apply {
             get(0).cellValueFactory = Callback { it.value.idProperty() }
             get(1).cellValueFactory = Callback { it.value.modelProperty() }
@@ -38,6 +46,7 @@ class MainView : View("Municipal Solid Waste Management System") {
             get(4).cellValueFactory = Callback { it.value.amountProperty() }
         }
 
+        tableLocation.items = RepositoryService.locationRepository.elementList
         tableVehicles.items = RepositoryService.vehicleRepository.elementList
         tableCollection.items = RepositoryService.collectionRepository.elementList
     }

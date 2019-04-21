@@ -73,14 +73,30 @@
                            <children>
                               <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <content>
-                                    <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="10.0">
+                                    <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="5.0">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" text="Waste collection" VBox.vgrow="NEVER">
+                                          <Label maxWidth="1.7976931348623157E308" text="Waste collection by Date" VBox.vgrow="NEVER">
                                              <font>
-                                                <Font size="18.0" />
+                                                <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <LineChart fx:id="lineChart" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                          <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                          <Label maxWidth="1.7976931348623157E308" text="Waste collection by Location" VBox.vgrow="NEVER">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <LineChart fx:id="collectionPerLocation" maxWidth="1.7976931348623157E308">
                                             <xAxis>
                                               <CategoryAxis side="BOTTOM" />
                                             </xAxis>
@@ -92,7 +108,7 @@
                                     </VBox>
                                  </content>
                                  <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </ScrollPane>
                            </children>
