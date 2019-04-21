@@ -6,22 +6,21 @@
 package praj.mswms.ui
 
 import javafx.collections.FXCollections
+import javafx.event.EventHandler
 import javafx.scene.chart.BarChart
 import javafx.scene.chart.LineChart
-import javafx.scene.chart.ValueAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.control.TableView
 import javafx.scene.layout.VBox
+import javafx.stage.FileChooser
 import javafx.util.Callback
 import praj.mswms.data.model.Collection
 import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
+import praj.mswms.util.PDFExportService
 import tornadofx.View
-import tornadofx.series
 import java.math.BigDecimal
-import java.sql.Date
-import java.time.LocalDate
 
 /**
  * The main view.
@@ -35,6 +34,8 @@ class MainView : View("Municipal Solid Waste Management System") {
     private val tableLocation: TableView<Location> by fxid()
     private val tableVehicles: TableView<Vehicle> by fxid()
     private val tableCollection: TableView<Collection> by fxid()
+
+    private val pdfService = PDFExportService()
 
     override fun onBeforeShow() {
         tableLocation.columns.apply {
@@ -78,5 +79,15 @@ class MainView : View("Municipal Solid Waste Management System") {
 
     fun openSQLRunner() {
         find<SQLRunnerView>().openWindow(owner = null)
+    }
+
+    fun generateReport() {
+        val path = FileChooser().apply {
+            initialFileName = "Report.pdf"
+            extensionFilters.add(FileChooser.ExtensionFilter("PDF Files", "*.pdf"))
+        }.showSaveDialog(currentStage) ?: return
+
+        pdfService.onSucceeded = EventHandler { println("Saved to ${path.absolutePath}") }
+        pdfService.generate(path)
     }
 }

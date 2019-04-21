@@ -10,11 +10,13 @@ repositories {
 dependencies {
     def tornadofx_version = "1.7.18"
     def h2_version = "1.4.197"
+    def easytable_version = "0.4.2"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "no.tornado:tornadofx:$tornadofx_version"
     implementation "com.h2database:h2:$h2_version"
+    implementation "com.github.vandeseer:easytable:$easytable_version"
 }
 
 mainClassName = "praj.mswms.LauncherKt"

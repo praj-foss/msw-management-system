@@ -19,3 +19,6 @@ $ ./mswms-0.1/bin/mswms.sh
 ### License
 This project is licensed under the MIT License. 
 Please see the [LICENSE](LICENSE) file for more information.
+
+### Credits
+[easytable](https://github.com/vandeseer/easytable) - Generates awesome tables in PDF
