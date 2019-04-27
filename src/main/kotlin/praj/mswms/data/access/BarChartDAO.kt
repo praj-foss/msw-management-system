@@ -6,7 +6,7 @@
 package praj.mswms.data.access
 
 import praj.mswms.service.DatabaseService
-import praj.mswms.util.AbountPerLocation
+import praj.mswms.util.AmountPerLocation
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
@@ -27,8 +27,8 @@ class BarChartDAO {
         )
     }
 
-    fun getAll(): List<AbountPerLocation> {
-        val locationList = ArrayList<AbountPerLocation>()
+    fun getAll(): List<AmountPerLocation> {
+        val locationList = ArrayList<AmountPerLocation>()
         val rs = psGetAll.executeQuery()
         while (rs.next()) {
             locationList.add(newData(rs))
@@ -37,7 +37,7 @@ class BarChartDAO {
         return locationList
     }
 
-    private fun newData(rs: ResultSet) = AbountPerLocation().apply {
+    private fun newData(rs: ResultSet) = AmountPerLocation().apply {
         xValue = rs.getString(1)
         yValue = rs.getBigDecimal(2)
     }

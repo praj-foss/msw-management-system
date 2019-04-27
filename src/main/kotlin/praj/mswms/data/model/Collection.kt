@@ -30,4 +30,11 @@ class Collection(
 
     var amount: BigDecimal by property(amount)
     fun amountProperty() = getProperty(Collection::amount)
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Collection)
+            id == other.id && time == other.time && location == other.location && vehicleId == other.vehicleId && amount == other.amount
+        else
+            false
+    }
 }

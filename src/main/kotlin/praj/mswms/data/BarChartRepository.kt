@@ -8,13 +8,13 @@ package praj.mswms.data
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import praj.mswms.data.access.BarChartDAO
-import praj.mswms.util.AbountPerLocation
+import praj.mswms.util.AmountPerLocation
 
 /**
  * Purpose: Magical
  */
 class BarChartRepository {
-    val listData: ObservableList<AbountPerLocation> = FXCollections.observableArrayList()
+    val listData: ObservableList<AmountPerLocation> = FXCollections.observableArrayList()
     val dao = BarChartDAO()
 
     fun load() = listData.addAll(dao.getAll())

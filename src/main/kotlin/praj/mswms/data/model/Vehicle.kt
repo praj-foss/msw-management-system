@@ -32,4 +32,11 @@ class Vehicle(
     override fun toString(): String {
         return "Vehicle[$id, $model, $capacity, ${lastLocation?.name}, $status]"
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Vehicle)
+            id == other.id && model == other.model && capacity == other.capacity && lastLocation == other.lastLocation && status == other.status
+        else
+            false
+    }
 }

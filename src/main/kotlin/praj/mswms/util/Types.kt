@@ -14,4 +14,4 @@ import java.math.BigDecimal
 
 typealias AmountPerDate = XYChart.Data<String, BigDecimal>
 
-typealias AbountPerLocation = XYChart.Data<String, BigDecimal>
+typealias AmountPerLocation = XYChart.Data<String, BigDecimal>

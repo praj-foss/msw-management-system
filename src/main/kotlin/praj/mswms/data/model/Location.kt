@@ -26,4 +26,11 @@ class Location(
     override fun toString(): String {
         return name
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Location)
+            id == other.id && name == other.name && type == other.type
+        else
+            false
+    }
 }
