@@ -5,6 +5,8 @@
 
 package praj.mswms.ui
 
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
@@ -18,6 +20,8 @@ import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
 import tornadofx.*
+import java.math.BigDecimal
+import java.time.LocalDateTime
 
 /**
  * UI for Collection.
@@ -31,6 +35,9 @@ class CollectionView : View("Collection") {
     private val fieldLocation: ComboBox<Location>       by fxid()
     private val fieldVehicle: ComboBox<Vehicle>         by fxid()
     private val fieldAmount: TextField                  by fxid()
+    private val btnNew: Button                          by fxid()
+    private val btnSave: Button                         by fxid()
+    private val btnDelete: Button                       by fxid()
 
     private val collectionModel = object : ItemViewModel<Collection>() {
         val id       = bind(Collection::idProperty)
@@ -39,6 +46,9 @@ class CollectionView : View("Collection") {
         val location = bind(Collection::locationProperty)
         val amount   = bind(Collection::amountProperty)
     }
+
+    private val collectionRepo = RepositoryService.collectionRepository
+    private val isNewCollection = SimpleBooleanProperty(false)
 
     override fun onDock() {
         fieldId.textProperty().bindBidirectional(collectionModel.id, IntegerStringConverter())
@@ -61,14 +71,47 @@ class CollectionView : View("Collection") {
                 get(4).cellValueFactory = Callback { it.value.amountProperty() }
             }
             bindSelected(collectionModel)
-            items = RepositoryService.collectionRepository.elementList
+            items = collectionRepo.elementList
+            sortOrder.add(columns[0])
             selectFirst()
+        }
+
+        btnNew.disableProperty().bind(isNewCollection)
+        btnSave.disableProperty().bind(collectionModel.dirty.not())
+        tableCollection.disableProperty().bind(isNewCollection)
+        isNewCollection.addListener { _, _, value ->
+            btnDelete.text = if (value) "Cancel" else "Delete"
         }
     }
 
-    fun onNewCollection() {}
+    fun onNewCollection() {
+        isNewCollection.set(true)
+        collectionModel.item = Collection(
+                0,
+                LocalDateTime.now(),
+                RepositoryService.locationRepository.elementList[0],
+                RepositoryService.vehicleRepository.elementList[0],
+                BigDecimal.ZERO
+        )
+    }
 
-    fun onSaveCollection() { collectionModel.commit() }
+    fun onSaveCollection() {
+        collectionModel.commit()
+        if (isNewCollection.get()) {
+            collectionRepo.addByDAO(collectionModel.item)
+            isNewCollection.set(false)
+            tableCollection.selectionModel.select(collectionModel.item)
+            return
+        }
+        collectionRepo.updateByDAO(tableCollection.selectedItem?.id ?: return, collectionModel.item)
+    }
 
-    fun onDeleteCollection() {}
+    fun onDeleteCollection() {
+        if (isNewCollection.get()) {
+            isNewCollection.set(false)
+            tableCollection.selectFirst()
+            return
+        }
+        collectionRepo.deleteByDAO(tableCollection.selectedItem?.id ?: return)
+    }
 }

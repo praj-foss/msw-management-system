@@ -11,4 +11,7 @@ package praj.mswms.data.access
 interface DAO<T> {
     fun getById(id: Int): T?
     fun getAll(): List<T>
+    fun insert(element: T)
+    fun update(id: Int, element: T)
+    fun delete(id: Int)
 }

@@ -19,6 +19,6 @@ class CollectionDeleteTrigger : AbstractCollectionTrigger() {
     }
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
-        RepositoryService.collectionRepository.remove(oldRow!![indexCollectionID] as Int)
+        RepositoryService.collectionRepository.delete(oldRow!![indexCollectionID] as Int)
     }
 }

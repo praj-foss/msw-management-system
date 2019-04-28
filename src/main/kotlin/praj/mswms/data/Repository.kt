@@ -10,7 +10,7 @@ import praj.mswms.data.access.DAO
 import praj.mswms.data.model.Model
 
 /**
- * Generic repository with methods to get, add, update or remove objects.
+ * Generic repository with methods to get, add, update or delete objects.
  */
 abstract class Repository<T : Model> {
     protected abstract val elementList: ObservableList<T>
@@ -32,9 +32,15 @@ abstract class Repository<T : Model> {
         }
     }
 
-    fun remove(id: Int) {
+    fun delete(id: Int) {
         if (get(id) != null)
             elementList.removeIf { it.id == id }
     }
-    // TODO: Add methods to modify the list, ignoring the triggers
+
+    // Direct action by DAO
+    fun addByDAO(element: T) = dao.insert(element)
+
+    fun updateByDAO(id: Int, element: T) = dao.update(id, element)
+
+    fun deleteByDAO(id: Int) = dao.delete(id)
 }

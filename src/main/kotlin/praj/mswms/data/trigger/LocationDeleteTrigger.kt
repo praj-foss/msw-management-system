@@ -19,6 +19,6 @@ class LocationDeleteTrigger : AbstractLocationTrigger() {
     }
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
-        RepositoryService.locationRepository.remove(oldRow!![indexLocationID] as Int)
+        RepositoryService.locationRepository.delete(oldRow!![indexLocationID] as Int)
     }
 }

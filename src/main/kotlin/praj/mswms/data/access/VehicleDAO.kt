@@ -18,6 +18,11 @@ import java.sql.ResultSet
 class VehicleDAO : DAO<Vehicle> {
     private val psGetById: PreparedStatement
     private val psGetAll: PreparedStatement
+    private val psGetModel: PreparedStatement
+    private val psGetStatus: PreparedStatement
+    private val psInsert: PreparedStatement
+    private val psUpdate: PreparedStatement
+    private val psDelete: PreparedStatement
 
     init {
         val connection = DatabaseService.connection
@@ -32,6 +37,34 @@ class VehicleDAO : DAO<Vehicle> {
                 "SELECT V.VehicleID, M.ModelName, M.Capacity, V.LocationID, S.StatusValue " +
                 "FROM Vehicle V, VehicleModel M, VehicleStatus S " +
                 "WHERE V.ModelID = M.ModelID AND V.StatusID = S.StatusID"
+        )
+
+        psGetModel = connection.prepareStatement(
+                "SELECT ModelID " +
+                "FROM VehicleModel " +
+                "WHERE ModelName = ?"
+        )
+
+        psGetStatus = connection.prepareStatement(
+                "SELECT StatusID " +
+                "FROM VehicleStatus " +
+                "WHERE StatusValue = ?"
+        )
+
+        psInsert = connection.prepareStatement(
+                "INSERT INTO Vehicle " +
+                "VALUES (?, ?, ?, ?)"
+        )
+
+        psUpdate = connection.prepareStatement(
+                "UPDATE Vehicle " +
+                "SET VehicleID = ?, ModelID = ?, LocationID = ?, StatusID = ? " +
+                "WHERE VehicleID = ?"
+        )
+
+        psDelete = connection.prepareStatement(
+                "DELETE FROM Vehicle " +
+                "WHERE LocationID = ?"
         )
     }
 
@@ -53,6 +86,49 @@ class VehicleDAO : DAO<Vehicle> {
             vehicleList.add(newVehicle(rs))
 
         return vehicleList
+    }
+
+    override fun insert(element: Vehicle) {
+        psInsert.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setInt(2, element.getModelId()!!)
+            setInt(3, element.lastLocation.id)
+            setInt(4, element.getStatusId()!!)
+            executeUpdate()
+        }
+    }
+
+    override fun update(id: Int, element: Vehicle) {
+        psUpdate.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setInt(2, element.getModelId()!!)
+            setInt(3, element.lastLocation.id)
+            setInt(4, element.getStatusId()!!)
+            setInt(5, id)
+            executeUpdate()
+        }
+    }
+
+    override fun delete(id: Int) {
+        psDelete.apply {
+            clearParameters()
+            setInt(1, id)
+            executeUpdate()
+        }
+    }
+
+    private fun Vehicle.getModelId(): Int? = psGetModel.run {
+        clearParameters()
+        setString(1, model)
+        executeQuery().let { if (it.next()) it.getInt(1) else null }
+    }
+
+    private fun Vehicle.getStatusId(): Int? = psGetStatus.run {
+        clearParameters()
+        setString(1, status)
+        executeQuery().let { if (it.next()) it.getInt(1) else null }
     }
 
     private fun newVehicle(rs: ResultSet) = Vehicle(

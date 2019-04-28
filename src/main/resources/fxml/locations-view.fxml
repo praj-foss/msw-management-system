@@ -38,7 +38,7 @@
                                     </font>
                                 </Label>
                                 <Pane prefHeight="10.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
-                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNewLocation" prefWidth="80.0" text="New" />
+                                <Button fx:id="btnNew" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNewLocation" prefWidth="80.0" text="New" />
                             </children>
                         </HBox>
                         <Label text="Location ID">
@@ -61,8 +61,8 @@
                   <ComboBox fx:id="fieldType" prefWidth="150.0" promptText="Select" />
                         <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#onSaveLocation" prefWidth="80.0" text="Save" />
-                                <Button mnemonicParsing="false" onAction="#onDeleteLocation" prefWidth="80.0" text="Delete" />
+                                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSaveLocation" prefWidth="80.0" text="Save" />
+                                <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteLocation" prefWidth="80.0" text="Delete" />
                             </children>
                             <VBox.margin>
                                 <Insets top="10.0" />

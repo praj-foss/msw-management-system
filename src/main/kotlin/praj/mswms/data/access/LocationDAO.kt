@@ -16,6 +16,10 @@ import java.sql.ResultSet
 class LocationDAO : DAO<Location> {
     private val psGetById: PreparedStatement
     private val psGetAll: PreparedStatement
+    private val psGetType: PreparedStatement
+    private val psInsert: PreparedStatement
+    private val psUpdate: PreparedStatement
+    private val psDelete: PreparedStatement
 
     init {
         val connection = DatabaseService.connection
@@ -30,6 +34,28 @@ class LocationDAO : DAO<Location> {
                 "SELECT L.LocationID, L.Name, T.TypeName " +
                 "FROM Location L, LocationType T " +
                 "WHERE L.TypeID = T.TypeID"
+        )
+
+        psGetType = connection.prepareStatement(
+                "SELECT TypeID " +
+                "FROM LocationType " +
+                "WHERE TypeName = ?"
+        )
+
+        psInsert = connection.prepareStatement(
+                "INSERT INTO Location " +
+                "VALUES (?, ?, ?)"
+        )
+
+        psUpdate = connection.prepareStatement(
+                "UPDATE Location " +
+                "SET LocationID = ?, Name = ?, TypeID = ? " +
+                "WHERE LocationID = ?"
+        )
+
+        psDelete = connection.prepareStatement(
+                "DELETE FROM Location " +
+                "WHERE LocationID = ?"
         )
     }
 
@@ -51,6 +77,41 @@ class LocationDAO : DAO<Location> {
             locationList.add(newLocation(rs))
 
         return locationList
+    }
+
+    override fun insert(element: Location) {
+        psInsert.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setString(2, element.name)
+            setInt(3, element.getTypeId()!!)
+            executeUpdate()
+        }
+    }
+
+    override fun update(id: Int, element: Location) {
+        psUpdate.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setString(2, element.name)
+            setInt(3, element.getTypeId()!!)
+            setInt(4, id)
+            executeUpdate()
+        }
+    }
+
+    override fun delete(id: Int) {
+        psDelete.apply {
+            clearParameters()
+            setInt(1, id)
+            executeUpdate()
+        }
+    }
+
+    private fun Location.getTypeId(): Int? = psGetType.run {
+        clearParameters()
+        setString(1, type)
+        executeQuery().let { if (it.next()) it.getInt(1) else null }
     }
 
     private fun newLocation(rs: ResultSet) = Location(

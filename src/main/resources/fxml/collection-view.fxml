@@ -44,7 +44,7 @@
                                     </font>
                                 </Label>
                                 <Pane prefHeight="10.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
-                                <Button mnemonicParsing="false" onAction="#onNewCollection" prefWidth="80.0" text="New" />
+                                <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewCollection" prefWidth="80.0" text="New" />
                             </children>
                         </HBox>
                         <Label text="Collection ID">
@@ -79,8 +79,8 @@
                         <TextField fx:id="fieldAmount" promptText="Tons" />
                         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="26.0" prefWidth="200.0" spacing="10.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#onSaveCollection" prefWidth="80.0" text="Save" />
-                                <Button mnemonicParsing="false" onAction="#onDeleteCollection" prefWidth="80.0" text="Delete" />
+                                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSaveCollection" prefWidth="80.0" text="Save" />
+                                <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteCollection" prefWidth="80.0" text="Delete" />
                             </children>
                             <VBox.margin>
                                 <Insets top="10.0" />

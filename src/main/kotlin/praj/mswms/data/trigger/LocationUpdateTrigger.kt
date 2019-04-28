@@ -5,6 +5,7 @@
 
 package praj.mswms.data.trigger
 
+import praj.mswms.data.model.Location
 import praj.mswms.service.RepositoryService
 import java.sql.Connection
 
@@ -19,10 +20,10 @@ class LocationUpdateTrigger : AbstractLocationTrigger() {
     }
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
-        RepositoryService.locationRepository.get(oldRow!![indexLocationID] as Int)?.apply {
-            id   = newRow!![indexLocationID] as Int
-            name = newRow[indexName] as String
-            type = getLocationType(newRow[indexTypeID] as Int)
-        }
+        RepositoryService.locationRepository.update(oldRow!![indexLocationID] as Int, Location(
+                newRow!![indexLocationID] as Int,
+                newRow[indexName] as String,
+                getLocationType(newRow[indexTypeID] as Int)
+        ))
     }
 }

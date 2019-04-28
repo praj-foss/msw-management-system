@@ -5,7 +5,9 @@
 
 package praj.mswms.ui
 
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
+import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
@@ -15,10 +17,7 @@ import javafx.util.converter.IntegerStringConverter
 import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
-import tornadofx.ItemViewModel
-import tornadofx.View
-import tornadofx.bindSelected
-import tornadofx.selectFirst
+import tornadofx.*
 
 /**
  * UI for Vehicles.
@@ -31,6 +30,9 @@ class VehiclesView : View("Vehicles") {
     private val fieldModel: ComboBox<String>       by fxid()
     private val fieldLocation: ComboBox<Location>  by fxid()
     private val fieldStatus: ComboBox<String>      by fxid()
+    private val btnNew: Button                     by fxid()
+    private val btnSave: Button                    by fxid()
+    private val btnDelete: Button                  by fxid()
 
     private val vehicleModel = object : ItemViewModel<Vehicle>() {
         val id       = bind(Vehicle::idProperty)
@@ -39,12 +41,15 @@ class VehiclesView : View("Vehicles") {
         val status   = bind(Vehicle::statusProperty)
     }
 
+    private val vehicleRepo = RepositoryService.vehicleRepository
+    private val isNewVehicle = SimpleBooleanProperty(false)
+
     override fun onDock() {
         fieldId.textProperty().bindBidirectional(vehicleModel.id, IntegerStringConverter())
 
         fieldModel.valueProperty().bindBidirectional(vehicleModel.model)
         fieldModel.items = FXCollections.observableArrayList<String>().also {
-            RepositoryService.vehicleRepository.elementList.forEach { v ->
+            vehicleRepo.elementList.forEach { v ->
                 if (! it.contains(v.model))
                     it.add(v.model)
             }
@@ -55,7 +60,7 @@ class VehiclesView : View("Vehicles") {
 
         fieldStatus.valueProperty().bindBidirectional(vehicleModel.status)
         fieldStatus.items = FXCollections.observableArrayList<String>().also {
-            RepositoryService.vehicleRepository.elementList.forEach { v ->
+            vehicleRepo.elementList.forEach { v ->
                 if (! it.contains(v.status))
                     it.add(v.status)
             }
@@ -70,14 +75,42 @@ class VehiclesView : View("Vehicles") {
                 get(4).cellValueFactory = Callback { it.value.statusProperty() }
             }
             bindSelected(vehicleModel)
-            items = RepositoryService.vehicleRepository.elementList
+            items = vehicleRepo.elementList
+            sortOrder.add(columns[0])
             selectFirst()
+        }
+
+        btnNew.disableProperty().bind(isNewVehicle)
+        btnSave.disableProperty().bind(vehicleModel.dirty.not())
+        tableVehicle.disableProperty().bind(isNewVehicle)
+        isNewVehicle.addListener { _, _, value ->
+            btnDelete.text = if (value) "Cancel" else "Delete"
         }
     }
 
-    fun onNewVehicle() {}
+    fun onNewVehicle() {
+        isNewVehicle.set(true)
+        val tmp = vehicleRepo.elementList[0]
+        vehicleModel.item = Vehicle(0, tmp.model, tmp.capacity, fieldLocation.items[0], fieldStatus.items[0])
+    }
 
-    fun onSaveVehicle() { vehicleModel.commit() }
+    fun onSaveVehicle() {
+        vehicleModel.commit()
+        if (isNewVehicle.get()) {
+            vehicleRepo.addByDAO(vehicleModel.item)
+            isNewVehicle.set(false)
+            tableVehicle.selectionModel.select(vehicleModel.item)
+            return
+        }
+        vehicleRepo.updateByDAO(tableVehicle.selectedItem?.id ?: return, vehicleModel.item)
+    }
 
-    fun onDeleteVehicle() {}
+    fun onDeleteVehicle() {
+        if (isNewVehicle.get()) {
+            isNewVehicle.set(false)
+            tableVehicle.selectFirst()
+            return
+        }
+        vehicleRepo.deleteByDAO(tableVehicle.selectedItem?.id ?: return)
+    }
 }

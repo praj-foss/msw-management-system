@@ -19,6 +19,6 @@ class VehicleDeleteTrigger : AbstractVehicleTrigger() {
     }
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
-        RepositoryService.vehicleRepository.remove(oldRow!![indexVehicleID] as Int)
+        RepositoryService.vehicleRepository.delete(oldRow!![indexVehicleID] as Int)
     }
 }

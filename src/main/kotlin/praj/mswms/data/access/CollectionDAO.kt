@@ -10,6 +10,7 @@ import praj.mswms.service.DatabaseService
 import praj.mswms.service.RepositoryService
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import java.sql.Timestamp
 
 /**
  * DAO for Collection objects.
@@ -17,6 +18,9 @@ import java.sql.ResultSet
 class CollectionDAO : DAO<Collection> {
     private val psGetById: PreparedStatement
     private val psGetAll: PreparedStatement
+    private val psInsert: PreparedStatement
+    private val psUpdate: PreparedStatement
+    private val psDelete: PreparedStatement
 
     init {
         val connection = DatabaseService.connection
@@ -27,6 +31,22 @@ class CollectionDAO : DAO<Collection> {
 
         psGetAll = connection.prepareStatement(
                 "SELECT * FROM Collection"
+        )
+
+        psInsert = connection.prepareStatement(
+                "INSERT INTO Collection " +
+                "VALUES (?, ?, ?, ?, ?)"
+        )
+
+        psUpdate = connection.prepareStatement(
+                "UPDATE Collection " +
+                "SET CollectionID = ?, CollectionTime = ?, LocationID = ?, VehicleID = ?, Amount = ? " +
+                "WHERE CollectionID = ?"
+        )
+
+        psDelete = connection.prepareStatement(
+                "DELETE FROM Vehicle " +
+                "WHERE LocationID = ?"
         )
     }
 
@@ -48,6 +68,39 @@ class CollectionDAO : DAO<Collection> {
             collectionList.add(newCollection(rs))
 
         return collectionList
+    }
+
+    override fun insert(element: Collection) {
+        psInsert.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setTimestamp(2, Timestamp.valueOf(element.time))
+            setInt(3, element.location.id)
+            setInt(4, element.vehicle.id)
+            setBigDecimal(5, element.amount)
+            executeUpdate()
+        }
+    }
+
+    override fun update(id: Int, element: Collection) {
+        psUpdate.apply {
+            clearParameters()
+            setInt(1, element.id)
+            setTimestamp(2, Timestamp.valueOf(element.time))
+            setInt(3, element.location.id)
+            setInt(4, element.vehicle.id)
+            setBigDecimal(5, element.amount)
+            setInt(6, id)
+            executeUpdate()
+        }
+    }
+
+    override fun delete(id: Int) {
+        psDelete.apply {
+            clearParameters()
+            setInt(1, id)
+            executeUpdate()
+        }
     }
 
     private fun newCollection(rs: ResultSet) = Collection(
