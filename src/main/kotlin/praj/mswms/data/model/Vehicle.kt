@@ -12,7 +12,7 @@ import tornadofx.property
  * Class for Vehicle model.
  */
 class Vehicle(
-        id: Int, model: String, capacity: Int, lastLocation: Location?, status: String?
+        id: Int, model: String, capacity: Int, lastLocation: Location, status: String
 ) : Model {
     override var id: Int by property(id)
     fun idProperty() = getProperty(Vehicle::id)
@@ -23,14 +23,18 @@ class Vehicle(
     var capacity: Int by property(capacity)
     fun capacityProperty() = getProperty(Vehicle::capacity)
 
-    var lastLocation: Location? by property(lastLocation)
+    var lastLocation: Location by property(lastLocation)
     fun lastLocationProperty() = getProperty(Vehicle::lastLocation)
 
-    var status: String? by property(status)
+    var status: String by property(status)
     fun statusProperty() = getProperty(Vehicle::status)
 
+    companion object {
+        val UNAVAILABLE = Vehicle(-1, "Unavailable", -1, Location.UNAVAILABLE, "Unavailable")
+    }
+
     override fun toString(): String {
-        return "Vehicle[$id, $model, $capacity, ${lastLocation?.name}, $status]"
+        return "ID $id: $model"
     }
 
     override fun equals(other: Any?): Boolean {

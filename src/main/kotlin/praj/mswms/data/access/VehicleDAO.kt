@@ -5,6 +5,7 @@
 
 package praj.mswms.data.access
 
+import praj.mswms.data.model.Location
 import praj.mswms.service.DatabaseService
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
@@ -58,7 +59,7 @@ class VehicleDAO : DAO<Vehicle> {
             id           = rs.getInt(1),
             model        = rs.getString(2),
             capacity     = rs.getInt(3),
-            lastLocation = RepositoryService.locationRepository.get(rs.getInt(4)),
-            status       = rs.getString(5)
+            lastLocation = RepositoryService.locationRepository.get(rs.getInt(4)) ?: Location.UNAVAILABLE,
+            status       = rs.getString(5) ?: Vehicle.UNAVAILABLE.status
     )
 }

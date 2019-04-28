@@ -5,7 +5,8 @@
 
 package praj.mswms.ui
 
-import javafx.scene.control.ChoiceBox
+import javafx.collections.FXCollections
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
@@ -27,7 +28,7 @@ class LocationsView : View("Locations") {
     private val tableLocation: TableView<Location>  by fxid()
     private val fieldId: TextField                  by fxid()
     private val fieldName: TextField                by fxid()
-    private val fieldType: ChoiceBox<String>        by fxid()
+    private val fieldType: ComboBox<String>         by fxid()
 
     private val locationModel = object : ItemViewModel<Location>() {
         val id   = bind(Location::idProperty)
@@ -38,7 +39,14 @@ class LocationsView : View("Locations") {
     override fun onDock() {
         fieldId.textProperty().bindBidirectional(locationModel.id, IntegerStringConverter())
         fieldName.textProperty().bindBidirectional(locationModel.name)
+
         fieldType.valueProperty().bindBidirectional(locationModel.type)
+        fieldType.items = FXCollections.observableArrayList<String>().also {
+            RepositoryService.locationRepository.elementList.forEach { loc ->
+                if (! it.contains(loc.type))
+                    it.add(loc.type)
+            }
+        }
 
         tableLocation.apply {
             columns.apply {
@@ -57,6 +65,7 @@ class LocationsView : View("Locations") {
     }
 
     fun onSaveLocation() {
+        locationModel.commit()
         // TODO: Modify location in repo
     }
 

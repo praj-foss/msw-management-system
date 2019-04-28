@@ -23,6 +23,10 @@ class Location(
     var type: String by property(type)
     fun typeProperty() = getProperty(Location::type)
 
+    companion object {
+        val UNAVAILABLE = Location(-1, "Unavailable", "Unavailable")
+    }
+
     override fun toString(): String {
         return name
     }

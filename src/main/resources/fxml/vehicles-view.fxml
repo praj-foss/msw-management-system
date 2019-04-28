@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -57,19 +57,19 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="fieldModel" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                  <ComboBox fx:id="fieldModel" prefWidth="150.0" promptText="Select" />
                         <Label text="Location">
                             <VBox.margin>
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="fieldLocation" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                  <ComboBox fx:id="fieldLocation" prefWidth="150.0" promptText="Select" />
                         <Label text="Status">
                             <VBox.margin>
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="fieldStatus" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                  <ComboBox fx:id="fieldStatus" prefWidth="150.0" promptText="Select" />
                         <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="200.0" spacing="10.0">
                             <children>
                                 <Button mnemonicParsing="false" onAction="#onSaveVehicle" prefWidth="80.0" text="Save" />

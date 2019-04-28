@@ -5,8 +5,8 @@
 
 package praj.mswms.ui
 
-import javafx.beans.property.ObjectProperty
-import javafx.scene.control.ChoiceBox
+import javafx.collections.FXCollections
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
@@ -26,11 +26,11 @@ import tornadofx.selectFirst
 class VehiclesView : View("Vehicles") {
     override val root: AnchorPane by fxml("/fxml/vehicles-view.fxml")
 
-    private val tableVehicle: TableView<Vehicle>    by fxid()
-    private val fieldId: TextField                  by fxid()
-    private val fieldModel: ChoiceBox<String>       by fxid()
-    private val fieldLocation: ChoiceBox<ObjectProperty<Location?>>  by fxid()
-    private val fieldStatus: ChoiceBox<ObjectProperty<String?>>      by fxid()
+    private val tableVehicle: TableView<Vehicle>   by fxid()
+    private val fieldId: TextField                 by fxid()
+    private val fieldModel: ComboBox<String>       by fxid()
+    private val fieldLocation: ComboBox<Location>  by fxid()
+    private val fieldStatus: ComboBox<String>      by fxid()
 
     private val vehicleModel = object : ItemViewModel<Vehicle>() {
         val id       = bind(Vehicle::idProperty)
@@ -41,9 +41,25 @@ class VehiclesView : View("Vehicles") {
 
     override fun onDock() {
         fieldId.textProperty().bindBidirectional(vehicleModel.id, IntegerStringConverter())
+
         fieldModel.valueProperty().bindBidirectional(vehicleModel.model)
+        fieldModel.items = FXCollections.observableArrayList<String>().also {
+            RepositoryService.vehicleRepository.elementList.forEach { v ->
+                if (! it.contains(v.model))
+                    it.add(v.model)
+            }
+        }
+
         fieldLocation.valueProperty().bindBidirectional(vehicleModel.location)
+        fieldLocation.items = RepositoryService.locationRepository.elementList
+
         fieldStatus.valueProperty().bindBidirectional(vehicleModel.status)
+        fieldStatus.items = FXCollections.observableArrayList<String>().also {
+            RepositoryService.vehicleRepository.elementList.forEach { v ->
+                if (! it.contains(v.status))
+                    it.add(v.status)
+            }
+        }
 
         tableVehicle.apply {
             columns.apply {
@@ -61,7 +77,7 @@ class VehiclesView : View("Vehicles") {
 
     fun onNewVehicle() {}
 
-    fun onSaveVehicle() {}
+    fun onSaveVehicle() { vehicleModel.commit() }
 
     fun onDeleteVehicle() {}
 }

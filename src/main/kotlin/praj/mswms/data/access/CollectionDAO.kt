@@ -51,10 +51,10 @@ class CollectionDAO : DAO<Collection> {
     }
 
     private fun newCollection(rs: ResultSet) = Collection(
-            id        = rs.getInt(1),
-            time      = rs.getTimestamp(2).toLocalDateTime(),
-            location  = RepositoryService.locationRepository.get(rs.getInt(3))!!,
-            vehicleId = rs.getInt(4),
-            amount    = rs.getBigDecimal(5)
+            id       = rs.getInt(1),
+            time     = rs.getTimestamp(2).toLocalDateTime(),
+            location = RepositoryService.locationRepository.get(rs.getInt(3))!!,
+            vehicle  = RepositoryService.vehicleRepository.get(rs.getInt(4))!!,
+            amount   = rs.getBigDecimal(5)
     )
 }

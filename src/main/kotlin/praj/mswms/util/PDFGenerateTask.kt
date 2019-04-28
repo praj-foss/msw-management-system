@@ -77,8 +77,8 @@ class PDFGenerateTask(private val path: File) : Task<Boolean>() {
                     .add(CellText.builder().text(it.id.toString()).build())
                     .add(CellText.builder().text(it.model).build())
                     .add(CellText.builder().text(it.capacity.toString()).build())
-                    .add(CellText.builder().text(it.lastLocation?.name ?: "Unavailable").build())
-                    .add(CellText.builder().text(it.status ?: "Unavailable").build())
+                    .add(CellText.builder().text(it.lastLocation.name).build())
+                    .add(CellText.builder().text(it.status).build())
                     .build())
         }
 
@@ -102,7 +102,7 @@ class PDFGenerateTask(private val path: File) : Task<Boolean>() {
                     .add(CellText.builder().text(it.id.toString()).build())
                     .add(CellText.builder().text(it.time.format(dateFormatter)).build())
                     .add(CellText.builder().text(it.location.name).build())
-                    .add(CellText.builder().text(it.vehicleId.toString()).build())
+                    .add(CellText.builder().text(it.vehicle.toString()).build())
                     .add(CellText.builder().text(it.amount.toString()).build())
                     .build())
         }

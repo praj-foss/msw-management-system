@@ -5,6 +5,7 @@
 
 package praj.mswms.data.trigger
 
+import praj.mswms.data.model.Location
 import praj.mswms.data.model.Vehicle
 import praj.mswms.service.RepositoryService
 import java.sql.Connection
@@ -26,8 +27,8 @@ class VehicleInsertTrigger : AbstractVehicleTrigger() {
                 id           = newRow[indexVehicleID] as Int,
                 model        = _model,
                 capacity     = _capacity,
-                lastLocation = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int),
-                status       = getVehicleStatus(newRow[indexStatusID] as Int)
+                lastLocation = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int) ?: Location.UNAVAILABLE,
+                status       = getVehicleStatus(newRow[indexStatusID] as Int) ?: Vehicle.UNAVAILABLE.status
         ))
     }
 }
