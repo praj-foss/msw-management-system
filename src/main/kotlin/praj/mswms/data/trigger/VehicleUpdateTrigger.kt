@@ -23,12 +23,12 @@ class VehicleUpdateTrigger : AbstractVehicleTrigger() {
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
         val (_model, _capacity) = getVehicleModelAndCapacity(newRow!![indexModelID] as Int)
 
-        praj.mswms.service.RepositoryService.vehicleRepository.get(oldRow!![indexVehicleID] as Int)?.apply {
-            id = newRow[indexVehicleID] as Int
-            model = _model
-            capacity = _capacity
-            lastLocation = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int) ?: Location.UNAVAILABLE
-            status = getVehicleStatus(newRow[indexStatusID] as Int) ?: Vehicle.UNAVAILABLE.status
-        }
+        praj.mswms.service.RepositoryService.vehicleRepository.update(oldRow!![indexVehicleID] as Int, Vehicle(
+                id           = newRow[indexVehicleID] as Int,
+                model        = _model,
+                capacity     = _capacity,
+                lastLocation = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int) ?: Location.UNAVAILABLE,
+                status       = getVehicleStatus(newRow[indexStatusID] as Int) ?: Vehicle.UNAVAILABLE.status
+        ))
     }
 }

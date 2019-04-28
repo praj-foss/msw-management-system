@@ -21,9 +21,9 @@ class LocationInsertTrigger : AbstractLocationTrigger() {
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
         RepositoryService.locationRepository.add(Location(
-                newRow!![indexLocationID] as Int,
-                newRow[indexName] as String,
-                getLocationType(newRow[indexTypeID] as Int)
+                id   = newRow!![indexLocationID] as Int,
+                name = newRow[indexName] as String,
+                type = getLocationType(newRow[indexTypeID] as Int)
         ))
     }
 }

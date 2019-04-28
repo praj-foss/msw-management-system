@@ -81,6 +81,7 @@ class VehiclesView : View("Vehicles") {
         }
 
         btnNew.disableProperty().bind(isNewVehicle)
+        fieldId.disableProperty().bind(isNewVehicle.not())
         btnSave.disableProperty().bind(vehicleModel.dirty.not())
         tableVehicle.disableProperty().bind(isNewVehicle)
         isNewVehicle.addListener { _, _, value ->

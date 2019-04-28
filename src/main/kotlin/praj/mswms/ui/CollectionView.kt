@@ -77,6 +77,7 @@ class CollectionView : View("Collection") {
         }
 
         btnNew.disableProperty().bind(isNewCollection)
+        fieldId.disableProperty().bind(isNewCollection.not())
         btnSave.disableProperty().bind(collectionModel.dirty.not())
         tableCollection.disableProperty().bind(isNewCollection)
         isNewCollection.addListener { _, _, value ->

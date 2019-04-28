@@ -66,6 +66,7 @@ class LocationsView : View("Locations") {
         }
 
         btnNew.disableProperty().bind(isNewLocation)
+        fieldId.disableProperty().bind(isNewLocation.not())
         btnSave.disableProperty().bind(locationModel.dirty.not())
         tableLocation.disableProperty().bind(isNewLocation)
         isNewLocation.addListener { _, _, value ->

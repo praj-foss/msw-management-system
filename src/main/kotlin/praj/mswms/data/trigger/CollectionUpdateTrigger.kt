@@ -5,6 +5,7 @@
 
 package praj.mswms.data.trigger
 
+import praj.mswms.data.model.Collection
 import praj.mswms.service.RepositoryService
 import java.math.BigDecimal
 import java.sql.Connection
@@ -21,12 +22,12 @@ class CollectionUpdateTrigger : AbstractCollectionTrigger() {
     }
 
     override fun fire(conn: Connection?, oldRow: Array<out Any>?, newRow: Array<out Any>?) {
-        RepositoryService.collectionRepository.get(oldRow!![indexCollectionID] as Int)?.apply {
-            id       = newRow!![indexCollectionID] as Int
-            time     = (newRow[indexTime] as Timestamp).toLocalDateTime()
-            location = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int)!!
-            vehicle  = RepositoryService.vehicleRepository.get(newRow[indexVehicleID] as Int)!!
-            amount   = newRow[indexAmount] as BigDecimal
-        }
+        RepositoryService.collectionRepository.update(oldRow!![indexCollectionID] as Int, Collection(
+                id       = newRow!![indexCollectionID] as Int,
+                time     = (newRow[indexTime] as Timestamp).toLocalDateTime(),
+                location = RepositoryService.locationRepository.get(newRow[indexLocationID] as Int)!!,
+                vehicle  = RepositoryService.vehicleRepository.get(newRow[indexVehicleID] as Int)!!,
+                amount   = newRow[indexAmount] as BigDecimal
+        ))
     }
 }
