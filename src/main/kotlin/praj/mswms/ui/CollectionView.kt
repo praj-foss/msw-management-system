@@ -6,10 +6,7 @@
 package praj.mswms.ui
 
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.Button
-import javafx.scene.control.ComboBox
-import javafx.scene.control.TableView
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.AnchorPane
 import javafx.util.Callback
 import javafx.util.converter.BigDecimalStringConverter
@@ -22,6 +19,7 @@ import praj.mswms.service.RepositoryService
 import tornadofx.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * UI for Collection.
@@ -66,6 +64,13 @@ class CollectionView : View("Collection") {
             columns.apply {
                 get(0).cellValueFactory = Callback { it.value.idProperty() }
                 get(1).cellValueFactory = Callback { it.value.timeProperty() }
+                get(1).cellFactory = Callback { object : TableCell<Collection, LocalDateTime>() {
+                    override fun updateItem(item: LocalDateTime?, empty: Boolean) {
+                        super.updateItem(item, empty)
+                        text = if (empty) "Unavailable"
+                               else item!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a"))
+                    }
+                }}
                 get(2).cellValueFactory = Callback { it.value.locationProperty() }
                 get(3).cellValueFactory = Callback { it.value.vehicleProperty() }
                 get(4).cellValueFactory = Callback { it.value.amountProperty() }
