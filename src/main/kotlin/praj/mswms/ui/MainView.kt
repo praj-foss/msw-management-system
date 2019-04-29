@@ -56,6 +56,6 @@ class MainView : View("Municipal Solid Waste Management System") {
         }.showSaveDialog(currentStage) ?: return
 
         pdfService.onSucceeded = EventHandler { println("Saved to ${path.absolutePath}") }
-        pdfService.generate(path)
+        pdfService.generate(path, find<OverviewView>().getSnapshot())
     }
 }

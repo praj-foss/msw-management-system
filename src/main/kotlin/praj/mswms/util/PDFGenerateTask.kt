@@ -6,29 +6,37 @@
 package praj.mswms.util
 
 import javafx.concurrent.Task
+import javafx.embed.swing.SwingFXUtils
+import javafx.scene.image.WritableImage
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.PDRectangle
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.vandeseer.easytable.TableDrawer
 import org.vandeseer.easytable.structure.Row
 import org.vandeseer.easytable.structure.Table
 import org.vandeseer.easytable.structure.cell.CellText
 import praj.mswms.service.RepositoryService
 import java.awt.Color
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.format.DateTimeFormatter
+import javax.imageio.ImageIO
 
 /**
  * JavaFX Task to print tables to PDF.
  */
-class PDFGenerateTask(private val path: File) : Task<Boolean>() {
+class PDFGenerateTask(
+        private val path: File, private val charts: WritableImage
+) : Task<Boolean>() {
     private val padding = 50F
     private val headerColor = Color.LIGHT_GRAY
     private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")
 
     override fun call(): Boolean {
         PDDocument().apply {
+            addImage(charts)
             addTable(locationTable())
             addTable(vehicleTable())
             addTable(collectionTable())
@@ -87,7 +95,7 @@ class PDFGenerateTask(private val path: File) : Task<Boolean>() {
 
     private fun collectionTable(): Table {
         val tableBuilder = Table.builder()
-                .addColumnsOfWidth(50F, 150F, 150F, 80F, 50F)
+                .addColumnsOfWidth(30F, 130F, 150F, 120F, 50F)
                 .addRow(Row.builder()
                         .backgroundColor(headerColor)
                         .add(CellText.builder().text("ID").build())
@@ -123,5 +131,21 @@ class PDFGenerateTask(private val path: File) : Task<Boolean>() {
             drawer.startY(page.mediaBox.height - padding)
             PDPageContentStream(this, page).use { drawer.contentStream(it).draw() }
         } while (! drawer.isFinished)
+    }
+
+    private fun PDDocument.addImage(image: WritableImage) {
+        val imgByteStream = ByteArrayOutputStream()
+        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", imgByteStream)
+        val imgObject = PDImageXObject.createFromByteArray(this, imgByteStream.toByteArray(), "Charts")
+
+        val page = PDPage(PDRectangle.A4)
+        this.addPage(page)
+
+        val width  = page.mediaBox.width - 2 * padding
+        val height = width * (image.height / image.width).toFloat()
+        val startX = (page.mediaBox.width - width) / 2
+        val startY = page.mediaBox.height - height - padding
+
+        PDPageContentStream(this, page).use { it.drawImage(imgObject, startX, startY, width, height) }
     }
 }

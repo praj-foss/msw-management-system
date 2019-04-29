@@ -6,6 +6,7 @@
 package praj.mswms.util
 
 import javafx.concurrent.Service
+import javafx.scene.image.WritableImage
 import java.io.File
 
 /**
@@ -14,10 +15,13 @@ import java.io.File
 class PDFExportService : Service<Boolean>() {
     private var firstRun = true
 
-    private var path = File("/tmp/Report.pdf")
+    private lateinit var path: File
+    private lateinit var charts: WritableImage
 
-    fun generate(path: File) {
+    fun generate(path: File, charts: WritableImage) {
         this.path = path
+        this.charts = charts
+
         if (firstRun) {
             firstRun = false
             start()
@@ -25,5 +29,5 @@ class PDFExportService : Service<Boolean>() {
             restart()
     }
 
-    override fun createTask() = PDFGenerateTask(path)
+    override fun createTask() = PDFGenerateTask(path, charts)
 }

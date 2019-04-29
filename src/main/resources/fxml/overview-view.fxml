@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <content>
-                <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" spacing="10.0">
+                <VBox fx:id="contentBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="680.0" spacing="10.0">
                     <children>
                         <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
                             <xAxis>
