@@ -7,32 +7,43 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <content>
-                <VBox fx:id="contentBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="680.0" spacing="10.0">
-                    <children>
-                        <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
-                            <xAxis>
-                                <CategoryAxis label="Date" side="BOTTOM" />
-                            </xAxis>
-                            <yAxis>
-                                <NumberAxis label="Tons" side="LEFT" />
-                            </yAxis>
-                        </LineChart>
-                        <BarChart fx:id="collectionPerLocation" minHeight="260.0" title="Waste collection by Location Type">
-                            <xAxis>
-                                <CategoryAxis label="Location Type" side="BOTTOM" />
-                            </xAxis>
-                            <yAxis>
-                                <NumberAxis label="Tons" side="LEFT" />
-                            </yAxis>
-                        </BarChart>
-                    </children>
-                </VBox>
+            <StackPane>
+               <children>
+                      <VBox fx:id="contentBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="680.0" spacing="30.0">
+                          <children>
+                              <LineChart fx:id="collectionPerDate" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="260.0" title="Waste collection by Date" VBox.vgrow="ALWAYS">
+                                  <xAxis>
+                                      <CategoryAxis label="Date" side="BOTTOM" />
+                                  </xAxis>
+                                  <yAxis>
+                                      <NumberAxis label="Tons" side="LEFT" />
+                                  </yAxis>
+                              </LineChart>
+                              <BarChart fx:id="collectionPerLocation" minHeight="260.0" title="Waste collection by Location Type">
+                                  <xAxis>
+                                      <CategoryAxis label="Location Type" side="BOTTOM" />
+                                  </xAxis>
+                                  <yAxis>
+                                      <NumberAxis label="Tons" side="LEFT" />
+                                  </yAxis>
+                              </BarChart>
+                          </children>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                      </VBox>
+               </children>
+            </StackPane>
             </content>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
