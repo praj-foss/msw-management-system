@@ -6,6 +6,8 @@
 package praj.mswms.service
 
 import praj.mswms.data.trigger.*
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.Statement
@@ -16,16 +18,28 @@ import java.sql.Statement
 object DatabaseService {
     private const val username = "sa"
     private const val password = "sa"
-    private const val url      = "jdbc:h2:~/mswms"
+    private const val appHome  = ".mswms"
+    private const val dbName   = "local"
 
     var connection: Connection
 
     init {
+        // Setup app dir
+        val appDir = Paths.get(System.getProperty("user.home"), appHome)
+        val firstRun = Files.notExists(appDir.resolve("$dbName.mv.db"))
+
         // Load database driver
         Class.forName("org.h2.Driver")
 
         // Get connection
-        connection = DriverManager.getConnection(url, username, password)
+        val dbUrl = "jdbc:h2:${appDir.resolve(dbName)}"
+        connection = DriverManager.getConnection(dbUrl, username, password)
+
+        // First run setup
+        if (firstRun) {
+            val initSql = this::class.java.classLoader.getResource("sql/init.sql")?.readText()
+            connection.prepareStatement(initSql).execute()
+        }
     }
 
     fun start() {
